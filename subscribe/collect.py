@@ -331,7 +331,13 @@ def aggregate(args: argparse.Namespace) -> None:
         targets.append((convert_name, filename, target, list_only, args.ignore_default_filters))
 
     for t in targets:
-        success = subconverter.generate_conf(generate_conf, t[0], source, t[1], t[2], True, t[3], t[4])
+        # Fork fix: the bundled subconverter v0.9.9 only emits VMess/SS links for
+        # target "v2ray" and silently drops VLESS/Trojan nodes, so v2ray.txt comes
+        # out empty whenever the pool has no VMess nodes. Use target "mixed"
+        # instead: with list=false it already outputs the standard base64 V2Ray
+        # subscription containing all protocols. Filename stays v2ray.txt.
+        effective_target = "mixed" if t[2] == "v2ray" else t[2]
+        success = subconverter.generate_conf(generate_conf, t[0], source, t[1], effective_target, True, t[3], t[4])
         if not success:
             logger.error(f"cannot generate subconverter config file for target: {t[2]}")
             continue

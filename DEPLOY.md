@@ -17,6 +17,12 @@ Fork：https://github.com/guoc27887-ux/aggregator（上游 wzdnzd/aggregator，c
 - 订阅源列表：https://gist.githubusercontent.com/guoc27887-ux/6643ad96b751412c39c44ea083d2c9de/raw/subscribes.txt
 - Gist 页面：https://gist.github.com/guoc27887-ux/6643ad96b751412c39c44ea083d2c9de
 
+## 本 fork 相对上游的改动
+
+1. Refresh 每 6 小时（上游每 2 小时）；Collect 每周日发现新机场不变。
+2. Process 工作流停用定时（需要 SUBSCRIBE_CONF 自定义配置，本部署不用），仅手动触发。
+3. collect.py 的 v2ray 修复：上游自带的 subconverter v0.9.9 对 target "v2ray" 只输出 VMess/SS 链接，VLESS/Trojan 节点会被静默丢掉，导致 v2ray.txt 为空（2026-11-12 本地实测：2 个 VLESS 节点 → v2ray.txt 0 字节）。本 fork 改为用 target "mixed"（list=false 时直接输出标准 base64 V2Ray 订阅，含全部协议），文件名仍是 v2ray.txt。验证：2 个 VLESS 节点 → v2ray.txt 680 字节 base64，单次解码即 2 条 vless 链接；clash.yaml（2 节点）与 singbox.json（17 outbounds）同期验证通过；两节点经 sing-box 实测 generate_204 均为 204。
+
 ## 需要的 Secrets（仓库 Settings → Secrets and variables → Actions）
 
 - GIST_LINK：已设置，`guoc27887-ux/6643ad96b751412c39c44ea083d2c9de`
