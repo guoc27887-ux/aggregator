@@ -1,8 +1,9 @@
 name: Refresh
 on:
-  # performed every two hours
+  # performed every six hours (fork change: upstream ran every two hours;
+  # this fork runs the refresh every 6 hours, see DEPLOY.md)
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 concurrency:

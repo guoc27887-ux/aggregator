@@ -1,8 +1,11 @@
 name: Process
 on:
-  schedule:
-    - cron: "05 03 * * *"
-    - cron: "05 11 * * *"
+  # schedule disabled in this fork: Process mode needs a SUBSCRIBE_CONF
+  # secret with a custom config, which this deployment does not use.
+  # Kept manual-only (workflow_dispatch). See DEPLOY.md.
+  # schedule:
+  #   - cron: "05 03 * * *"
+  #   - cron: "05 11 * * *"
   workflow_dispatch:
 
 env:
